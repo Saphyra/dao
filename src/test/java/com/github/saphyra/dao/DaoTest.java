@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -35,11 +36,12 @@ public class DaoTest {
     @Before
     public void init() {
         when(converter.convertDomain(DOMAIN)).thenReturn(ENTITY);
+        when(converter.convertDomain(Arrays.asList(DOMAIN))).thenReturn(Arrays.asList(ENTITY));
         when(converter.convertEntity(ENTITY)).thenReturn(DOMAIN);
     }
 
     @Test
-    public void testDelete(){
+    public void testDelete() {
         //WHEN
         underTest.delete(DOMAIN);
         //THEN
@@ -47,7 +49,7 @@ public class DaoTest {
     }
 
     @Test
-    public void testDeleteById(){
+    public void testDeleteById() {
         //WHEN
         underTest.deleteById(ID);
         //THEN
@@ -55,7 +57,7 @@ public class DaoTest {
     }
 
     @Test
-    public void testFindByIdShouldReturnEmptyWhenNotFound(){
+    public void testFindByIdShouldReturnEmptyWhenNotFound() {
         //GIVEN
         when(testRepository.findById(ID)).thenReturn(Optional.empty());
         //WHEN
@@ -63,7 +65,7 @@ public class DaoTest {
     }
 
     @Test
-    public void testFindByIdShouldReturnDomain(){
+    public void testFindByIdShouldReturnDomain() {
         //GIVEN
         when(testRepository.findById(ID)).thenReturn(Optional.of(ENTITY));
         //WHEN
@@ -74,12 +76,20 @@ public class DaoTest {
     }
 
     @Test
-    public void testSave(){
+    public void testSave() {
         //WHEN
         underTest.save(DOMAIN);
         //THEN
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
         verify(testRepository).save(argumentCaptor.capture());
         assertEquals(ENTITY, argumentCaptor.getValue());
+    }
+
+    @Test
+    public void testStaveAll() {
+        //WHEN
+        underTest.saveAll(Arrays.asList(DOMAIN));
+        //THEN
+        verify(testRepository).saveAll(Arrays.asList(ENTITY));
     }
 }
