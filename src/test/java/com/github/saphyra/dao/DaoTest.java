@@ -49,6 +49,14 @@ public class DaoTest {
     }
 
     @Test
+    public void deleteAll() {
+        //WHEN
+        underTest.deleteAll(Arrays.asList(DOMAIN));
+        //THEN
+        verify(testRepository).deleteAll(Arrays.asList(ENTITY));
+    }
+
+    @Test
     public void testDeleteById() {
         //WHEN
         underTest.deleteById(ID);

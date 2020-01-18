@@ -16,6 +16,10 @@ public abstract class AbstractDao<ENTITY, DOMAIN, ID, REPOSITORY extends CrudRep
         repository.delete(converter.convertDomain(domain));
     }
 
+    public void deleteAll(List<DOMAIN> domains) {
+        repository.deleteAll(converter.convertDomain(domains));
+    }
+
     public void deleteById(ID id) {
         repository.deleteById(id);
     }
