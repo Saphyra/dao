@@ -10,11 +10,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +41,7 @@ public class DaoTest {
         when(converter.convertDomain(DOMAIN)).thenReturn(ENTITY);
         when(converter.convertDomain(Arrays.asList(DOMAIN))).thenReturn(Arrays.asList(ENTITY));
         when(converter.convertEntity(ENTITY)).thenReturn(DOMAIN);
+        given(converter.convertEntity(Arrays.asList(ENTITY))).willReturn(Arrays.asList(DOMAIN));
     }
 
     @Test
@@ -50,6 +54,13 @@ public class DaoTest {
 
     @Test
     public void deleteAll() {
+        underTest.deleteAll();
+
+        verify(testRepository).deleteAll();
+    }
+
+    @Test
+    public void deleteAllEntitites() {
         //WHEN
         underTest.deleteAll(Arrays.asList(DOMAIN));
         //THEN
@@ -62,6 +73,24 @@ public class DaoTest {
         underTest.deleteById(ID);
         //THEN
         verify(testRepository).deleteById(ID);
+    }
+
+    @Test
+    public void findAll() {
+        given(testRepository.findAll()).willReturn(Arrays.asList(ENTITY));
+
+        List<String> result = underTest.findAll();
+
+        assertThat(result).containsExactly(DOMAIN);
+    }
+
+    @Test
+    public void findAllByIds() {
+        given(testRepository.findAllById(Arrays.asList(ID))).willReturn(Arrays.asList(ENTITY));
+
+        List<String> result = underTest.findAllById(Arrays.asList(ID));
+
+        assertThat(result).containsExactly(DOMAIN);
     }
 
     @Test

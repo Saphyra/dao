@@ -12,7 +12,7 @@
 
     <groupId>com.github.saphyra</groupId>
     <artifactId>${artifactId}</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 
     <name>${projectName}</name>
     <description>${projectDescription}</description>
@@ -63,6 +63,15 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.15.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

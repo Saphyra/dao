@@ -4,6 +4,7 @@ import com.github.saphyra.converter.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +17,30 @@ public abstract class AbstractDao<ENTITY, DOMAIN, ID, REPOSITORY extends CrudRep
         repository.delete(converter.convertDomain(domain));
     }
 
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
     public void deleteAll(List<DOMAIN> domains) {
         repository.deleteAll(converter.convertDomain(domains));
     }
 
     public void deleteById(ID id) {
         repository.deleteById(id);
+    }
+
+    public List<DOMAIN> findAll() {
+        Iterable<ENTITY> entities = repository.findAll();
+        List<ENTITY> entityList = new ArrayList<>();
+        entities.forEach(entityList::add);
+        return converter.convertEntity(entityList);
+    }
+
+    public List<DOMAIN> findAllById(Iterable<ID> ids) {
+        Iterable<ENTITY> entities = repository.findAllById(ids);
+        List<ENTITY> entityList = new ArrayList<>();
+        entities.forEach(entityList::add);
+        return converter.convertEntity(entityList);
     }
 
     public Optional<DOMAIN> findById(ID id) {
